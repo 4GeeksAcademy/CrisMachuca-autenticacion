@@ -6,12 +6,20 @@ from flask import Flask, request, jsonify, url_for, send_from_directory
 from flask_migrate import Migrate
 from flask_swagger import swagger
 from api.utils import APIException, generate_sitemap
-from api.models import db
+from api.models import db, User
 from api.routes import api
 from api.admin import setup_admin
 from api.commands import setup_commands
 
+from flask_jwt_extended import create_access_token
+from flask_jwt_extended import get_jwt_identity
+from flask_jwt_extended import jwt_required
+from flask_jwt_extended import JWTManager
+
+
 # from models import Person
+
+
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
 static_file_dir = os.path.join(os.path.dirname(
@@ -37,6 +45,10 @@ setup_admin(app)
 # add the admin
 setup_commands(app)
 
+# Setup the Flask-JWT-Extended extension
+app.config["JWT_SECRET_KEY"] = "llavesupersecreta"  # Change this!
+jwt = JWTManager(app)
+
 # Add all endpoints form the API with a "api" prefix
 app.register_blueprint(api, url_prefix='/api')
 
@@ -55,6 +67,32 @@ def sitemap():
     if ENV == "development":
         return generate_sitemap(app)
     return send_from_directory(static_file_dir, 'index.html')
+
+
+@app.route('/user', methods=['GET'])
+def handle_hello():
+    all_users= User.query.all()
+    results = list(map(lambda user: user.serialize(), all_users))
+   
+    return jsonify(results), 200
+
+@app.route('/login', methods=['POST'])
+def login():
+    email = request.json.get("email", None)
+    password = request.json.get("password", None)
+    user = User.query.filter_by(email= email).first()
+    if user is None:
+        return jsonify({"message":"ese email no existe"}), 401
+    print(email)
+    print(user)
+    if password != user.password:
+        return jsonify({"message": "contraseña incorrecta"}), 401
+    
+    access_token = create_access_token(identity=email)
+    return jsonify(access_token=access_token)
+    
+   
+   
 
 # any other endpoint will try to serve it like a static file
 
