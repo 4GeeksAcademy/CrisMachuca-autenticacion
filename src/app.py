@@ -39,15 +39,17 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)
 
+# Setup the Flask-JWT-Extended extension
+app.config["JWT_SECRET_KEY"] = "esta es la frase mas larga que sirve como password"  # Change this!
+jwt = JWTManager(app)
+
 # add the admin
 setup_admin(app)
 
 # add the admin
 setup_commands(app)
 
-# Setup the Flask-JWT-Extended extension
-app.config["JWT_SECRET_KEY"] = "llavesupersecreta"  # Change this!
-jwt = JWTManager(app)
+
 
 # Add all endpoints form the API with a "api" prefix
 app.register_blueprint(api, url_prefix='/api')
@@ -70,6 +72,7 @@ def sitemap():
 
 
 @app.route('/user', methods=['GET'])
+@jwt_required()
 def handle_hello():
     all_users= User.query.all()
     results = list(map(lambda user: user.serialize(), all_users))
@@ -91,7 +94,12 @@ def login():
     access_token = create_access_token(identity=email)
     return jsonify(access_token=access_token)
     
-   
+@app.route("/protected", methods=["GET"])
+@jwt_required()
+def protected():
+    # Access the identity of the current user with get_jwt_identity
+    current_user = get_jwt_identity()
+    return jsonify(logged_in_as=current_user), 200   
    
 
 # any other endpoint will try to serve it like a static file
