@@ -93,6 +93,27 @@ def login():
     
     access_token = create_access_token(identity=email)
     return jsonify(access_token=access_token)
+
+@app.route('/signup', methods=['POST'])
+def signup():
+    body = request.get_json()
+    print(body)
+    
+    user = User.query.filter_by(email=body["email"]).first()
+    print(user)
+    if user is None:
+        user =User(email=body["email"], password=body["password"], is_active=True)
+        db.session.add(user)
+        db.session.commit(user)
+        response_body = {
+            "msg": "Usuario Creado"
+        }
+        return jsonify(response_body), 200
+    else:
+        return jsonify({"message":"Ese usuario ya existe"}), 401
+    
+    
+   
     
 @app.route("/protected", methods=["GET"])
 @jwt_required()

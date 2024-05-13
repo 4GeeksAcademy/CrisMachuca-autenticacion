@@ -2,18 +2,18 @@ import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
 import { Link, useParams } from "react-router-dom";
 import { Context } from "../store/appContext";
-import { Private } from "./private";
 
 
 
-export const Login = props => {
+export const SignUp = props => {
 	const { store, actions } = useContext(Context);
 	const params = useParams();
 
 	return (
 		<div className="container d-flex flex-column justify-content-center align-items-center gap-3 p-4">
 			<div className="form-container">
-	<p className="title">Login</p>
+	<p className="title">Not member yet?</p>
+    <p className="title">Sign Up</p>
 	<form className="form">
 		<div className="input-group">
 			<label for="username">Username</label>
@@ -22,15 +22,13 @@ export const Login = props => {
 		<div className="input-group">
 			<label for="password">Password</label>
 			<input type="password" name="password" id="password" placeholder=""/>
-			<div className="forgot">
-				<a rel="noopener noreferrer" href="#">Forgot Password ?</a>
-			</div>
+			
 		</div>
-		<button className="sign">Sign in</button>
+		<button className="sign mt-4">Sign up</button>
 	</form>
 	<div className="social-message">
 		<div className="line"></div>
-		<p className="message">Login with social accounts</p>
+		<p className="message">SignUp with social accounts</p>
 		<div className="line"></div>
 	</div>
 	<div className="social-icons">
@@ -50,20 +48,21 @@ export const Login = props => {
 			</svg>
 		</button>
 	</div>
-	<p className="signup">Don't have an account?
-	<Link to="/signup">
-				<span className="ms-2" href="#" role="button">
-					Sign Up
-				</span>
-			</Link>
-		
+	<p className="signup">Already member?
+        <Link to="/">
+		    <span rel="noopener noreferrer" href="#" className=""> Login</span>
+        </Link>
 	</p>
 </div>
-			<Private />
+			<Link to="/">
+				<span className="btn btn-primary btn-lg" href="#" role="button">
+					Back home
+				</span>
+			</Link>
 		</div>
 	);
 };
 
-Login.propTypes = {
+SignUp.propTypes = {
 	match: PropTypes.object
 };
