@@ -40,7 +40,7 @@ MIGRATE = Migrate(app, db, compare_type=True)
 db.init_app(app)
 
 # Setup the Flask-JWT-Extended extension
-app.config["JWT_SECRET_KEY"] = "esta es la frase mas larga que sirve como password"  # Change this!
+app.config["JWT_SECRET_KEY"] = "esta es la clave super secreta que debe ser una frase larga"  # Change this!
 jwt = JWTManager(app)
 
 # add the admin
@@ -71,56 +71,9 @@ def sitemap():
     return send_from_directory(static_file_dir, 'index.html')
 
 
-@app.route('/user', methods=['GET'])
-@jwt_required()
-def handle_hello():
-    all_users= User.query.all()
-    results = list(map(lambda user: user.serialize(), all_users))
-   
-    return jsonify(results), 200
 
-@app.route('/login', methods=['POST'])
-def login():
-    email = request.json.get("email", None)
-    password = request.json.get("password", None)
-    user = User.query.filter_by(email= email).first()
-    if user is None:
-        return jsonify({"message":"ese email no existe"}), 401
-    print(email)
-    print(user)
-    if password != user.password:
-        return jsonify({"message": "contraseña incorrecta"}), 401
     
-    access_token = create_access_token(identity=email)
-    return jsonify(access_token=access_token)
-
-@app.route('/signup', methods=['POST'])
-def signup():
-    body = request.get_json()
-    print(body)
-    
-    user = User.query.filter_by(email=body["email"]).first()
-    print(user)
-    if user is None:
-        user =User(email=body["email"], password=body["password"], is_active=True)
-        db.session.add(user)
-        db.session.commit(user)
-        response_body = {
-            "msg": "Usuario Creado"
-        }
-        return jsonify(response_body), 200
-    else:
-        return jsonify({"message":"Ese usuario ya existe"}), 401
-    
-    
-   
-    
-@app.route("/protected", methods=["GET"])
-@jwt_required()
-def protected():
-    # Access the identity of the current user with get_jwt_identity
-    current_user = get_jwt_identity()
-    return jsonify(logged_in_as=current_user), 200   
+      
    
 
 # any other endpoint will try to serve it like a static file

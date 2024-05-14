@@ -6,27 +6,34 @@ import { Private } from "./private";
 
 
 
-export const Login = props => {
+const Login = () => {
 	const { store, actions } = useContext(Context);
-	const params = useParams();
+	const [email, setEmail] = useState('')
+	const [password, setPassword] = useState('')
+
+	function sendData(e) {
+		e.preventDefault()
+		actions.login(email, password)
+	}
+	
 
 	return (
 		<div className="container d-flex flex-column justify-content-center align-items-center gap-3 p-4">
 			<div className="form-container">
 	<p className="title">Login</p>
-	<form className="form">
+	<form className="form" onSubmit={sendData}>
 		<div className="input-group">
-			<label for="username">Username</label>
-			<input type="text" name="username" id="username" placeholder=""/>
+			<label for="email">Email</label>
+			<input type="email" name="email" id="email" placeholder="" value={email} onChange={(e) => setEmail(e.target.value)}/>
 		</div>
 		<div className="input-group">
-			<label for="password">Password</label>
-			<input type="password" name="password" id="password" placeholder=""/>
+			<label for="clave">Password</label>
+			<input type="password" name="clave" id="clave" placeholder="" value={password} onChange={(e) => setPassword(e.target.value)}/>
 			<div className="forgot">
 				<a rel="noopener noreferrer" href="#">Forgot Password ?</a>
 			</div>
 		</div>
-		<button className="sign">Sign in</button>
+		<button type="submit" className="sign">Sign in</button>
 	</form>
 	<div className="social-message">
 		<div className="line"></div>
@@ -64,6 +71,4 @@ export const Login = props => {
 	);
 };
 
-Login.propTypes = {
-	match: PropTypes.object
-};
+export default Login
