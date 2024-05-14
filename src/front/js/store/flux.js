@@ -13,7 +13,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 					background: "white",
 					initial: "white"
 				}
-			]
+			],
+			auth: false,
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
@@ -34,8 +35,21 @@ const getState = ({ getStore, getActions, setStore }) => {
 					)
 				};
 				fetch(process.env.BACKEND_URL + "/api/login", requestOptions)
-				.then(response => response.json())
-				.then(data => console.log(data))
+				.then(response => {
+					if(response.ok) {
+						setStore({auth: true})
+					}
+					return response.json()
+				})
+				.then(data => {
+					localStorage.setItem("token", data.access_token)
+				})
+			},
+			
+			logout: () => {
+				console.log("log out desde flux")
+				localStorage.removeItem("token");
+				setStore({auth: false})
 			},
 
 			getMessage: async () => {
