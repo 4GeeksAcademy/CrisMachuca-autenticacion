@@ -81,12 +81,16 @@ const getState = ({ getStore, getActions, setStore }) => {
 				})
 			},
 
-			verifyToken: () => {
-                const token = localStorage.getItem("token");
-                if (token) {
-                    setStore({ auth: true });
-                } else {
-                    setStore({ auth: false });
+			verifyToken: async () => {
+                try {
+                    const token = localStorage.getItem("token");
+                    if (token) {
+                        setStore({ auth: true });
+                    } else {
+                        setStore({ auth: false });
+                    }
+                } catch (error) {
+                    console.error("Error al verificar el token:", error);
                 }
             },
 			

@@ -7,16 +7,30 @@ import { Navigate } from "react-router-dom";
 
 export const Home = () => {
 	const { store, actions } = useContext(Context);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
-        actions.verifyToken();
-    }, []);
+        const verifyToken = async () => {
+            await actions.verifyToken();
+            setLoading(false);
+        };
+        if (loading) {
+            verifyToken();
+        }
+    }, [loading, actions]);
 
-	return (
-		<div className="text-center mt-5">
-			<h1>Home</h1>
-			{store.auth == true ? <Navigate to="/private"/>: <Login />}
-			
-		</div>
-	);
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (store.auth) {
+        return <Navigate to="/private" />;
+    }
+
+    return (
+        <div className="text-center mt-5">
+            <h1>Home</h1>
+            <Login />
+        </div>
+    );
 };
