@@ -12,7 +12,7 @@ export const Home = () => {
 		<div className="text-center mt-5">
 			<h1>Home</h1>
 			{store.auth == true ? <Navigate to="/private"/>: <Login />}
-			<Login />
+			
 		</div>
 	);
 };

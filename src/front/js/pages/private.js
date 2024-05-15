@@ -12,15 +12,15 @@ export const Private = props => {
 	return (
 		<div className="container d-flex flex-column justify-content-center align-items-center gap-3 p-4">
 			<div className="form-container">
+				<p><span style={{fontWeight:"bolder"}}>Welcome</span> {store.email}</p>
 	<p className="title">This is your private area</p>
     <p className="title">Profile</p>
-	<div className="container bg-primary">
+	<div className="container d-flex flex-column justify-content-center align-items-center">
 		
-	<p className="signup">Do you want to exit?
-        <Link to="/">
-		    <button rel="noopener noreferrer" href="#" className="btn btn-warning"> Log Out</button>
-        </Link>
-	</p>
+	<p className="signup pe-2">Do you want to exit?</p>
+	<Link to="/">
+		    <button rel="noopener noreferrer" href="#" className="btn btn-warning m-2" onClick={() => actions.logout()}> Log Out</button>
+    </Link>
 	</div>
 	
 	
