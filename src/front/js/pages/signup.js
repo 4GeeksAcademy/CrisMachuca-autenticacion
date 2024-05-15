@@ -15,8 +15,9 @@ export const SignUp = props => {
 
     return (
         <div className="container d-flex flex-column justify-content-center align-items-center gap-3 p-4">
+            <h1 className="title">Not member yet?</h1>
             <div className="form-container">
-                <p className="title">Not member yet?</p>
+                
                 <p className="title">Sign Up</p>
                 <form className="form" onSubmit={handleSubmit}>
                     <div className="input-group">
