@@ -43,7 +43,7 @@ const Login = () => {
 	
 	
 	<Link to="/signup">
-		<span className="ms-2" href="#" role="button">
+		<span className="signup-button ms-2" href="#" role="button">
 			Sign Up
 		</span>
 	</Link>

@@ -51,7 +51,7 @@ export const SignUp = props => {
                 
                
                     <Link to="/">
-                        <span href="#" className="ms-2" role="button"> 
+                        <span href="#" className="signup-button ms-2 text-center"> 
 							Login
 						</span>
                     </Link>
