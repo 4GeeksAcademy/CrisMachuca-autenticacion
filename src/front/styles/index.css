@@ -78,12 +78,30 @@
     font-weight: 600;
   }
 
-  .signup-button:link, :visited, :hover, :active{
-    color: #fff;
-    
+  .btn-form {
+    background-color: transparent;
+    color: white;
+    border: 1px solid rgb(169, 66, 228)
+  }
+
+  .btn-form:hover {
+    background-color: transparent;
+    color: rgb(169, 66, 228);
+    border: 1px solid rgb(169, 66, 228)
   }
   
-
+  .navbar-brand {
+    color: rgb(169, 66, 228);
+  }
+  .navbar-brand:hover {
+    color: rgb(169, 66, 228);
+  }
+  .nav-link{
+    color: white;
+  }
+  .nav-link:hover{
+    color: rgb(169, 66, 228);
+  }
   
   .social-message {
     display: flex;

@@ -1,23 +1,31 @@
 import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
-import rigoImageUrl from "../../img/rigo-baby.jpg";
-import "../../styles/home.css";
-import  Login from "./login";
 import { Navigate } from "react-router-dom";
+import Login from "./login";
+import "../../styles/home.css";
 
 export const Home = () => {
-	const { store, actions } = useContext(Context);
-	const [loading, setLoading] = useState(true);
+    const { store, actions } = useContext(Context);
+    const [loading, setLoading] = useState(true);
+    const [mounted, setMounted] = useState(true); // Variable para controlar si el componente está montado
 
-	useEffect(() => {
+    useEffect(() => {
         const verifyToken = async () => {
             await actions.verifyToken();
-            setLoading(false);
+            if (mounted) { // Verificar si el componente está montado antes de actualizar el estado
+                setLoading(false);
+            }
         };
+
         if (loading) {
             verifyToken();
         }
-    }, [loading, actions]);
+
+        // Función de limpieza para actualizar el estado de 'mounted' cuando el componente se desmonta
+        return () => {
+            setMounted(false);
+        };
+    }, [loading, actions, mounted]);
 
     if (loading) {
         return <div>Loading...</div>;

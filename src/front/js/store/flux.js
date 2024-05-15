@@ -17,7 +17,8 @@ const getState = ({ getStore, getActions, setStore }) => {
 				}
 			],
 			auth: false,
-			email: null
+			email: null,
+			errorMessage: null
 			
 		},
 		actions: {
@@ -27,33 +28,32 @@ const getState = ({ getStore, getActions, setStore }) => {
 			},
 
 			SignUp: (email, password) => {
-                console.log('signup desde Flux')
-                const requestOptions = {
-                    method: 'POST',
-                    headers: { 'Content-Type': "application/json" },
-                    body: JSON.stringify(
-                        {
-                            "email": email,
-                            "password": password
-                        }
-                    )
-                };
-                fetch(process.env.BACKEND_URL + "/api/signup", requestOptions)
-                    .then(response => {
-                        if (response.ok) {
-                            return response.json();
-                        } else {
-                            throw new Error("Signup failed");
-                        }
-                    })
-                    .then(data => {
-                        setStore({ auth: true, email: email });
-                        localStorage.setItem("token", data.access_token);
-                    })
-                    .catch(error => {
-                        console.error("There was an error!", error);
-                    });
-            },
+				console.log('signup desde Flux')
+				const requestOptions = {
+					method: 'POST',
+					headers: { 'Content-Type': "application/json" },
+					body: JSON.stringify({
+						"email": email,
+						"password": password
+					})
+				};
+				fetch(process.env.BACKEND_URL + "/api/signup", requestOptions)
+					.then(response => {
+						if (response.ok) {
+							return response.json();
+						} else {
+							throw new Error("User already exists"); 
+						}
+					})
+					.then(data => {
+						setStore({ auth: true, email: email });
+						localStorage.setItem("token", data.access_token);
+					})
+					.catch(error => {
+						console.error("There was an error!", error);
+						setStore({ errorMessage: error.message }); 
+					});
+			},
 
 
 
@@ -73,12 +73,18 @@ const getState = ({ getStore, getActions, setStore }) => {
 				.then(response => {
 					if(response.ok) {
 						setStore({auth: true, email: email})
+					} else {
+						throw new Error("Email or password wrong"); 
 					}
 					return response.json()
 				})
 				.then(data => {
 					localStorage.setItem("token", data.access_token)
 				})
+				.catch(error => {
+					console.error("There was an error!", error);
+					setStore({ errorMessage: error.message }); 
+				});
 			},
 
 			verifyToken: async () => {

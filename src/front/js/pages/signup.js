@@ -17,8 +17,8 @@ export const SignUp = props => {
         <div className="container d-flex flex-column justify-content-center align-items-center gap-3 p-4">
             <h1 className="title">Not member yet?</h1>
             <div className="form-container">
-                
                 <p className="title">Sign Up</p>
+                <div className="error-message">{store.errorMessage}</div>
                 <form className="form" onSubmit={handleSubmit}>
                     <div className="input-group">
                         <label htmlFor="email">Email</label>
@@ -49,17 +49,16 @@ export const SignUp = props => {
                     <p className="message">Already member?</p>
                     <div className="line"></div>
                 </div>
-                
-               
+                <div className="social-message d-flex justify-content-center align-items-center">
                     <Link to="/">
-                        <span href="#" className="signup-button ms-2 text-center"> 
-							Login
-						</span>
+                        <button className="btn btn-form" href="#" role="button"> 
+                            Login
+                        </button>
                     </Link>
-                
+                </div>
             </div>
             <Link to="/">
-                <span className="btn btn-primary btn-lg" href="#" role="button">
+                <span className="btn btn-success btn-lg" href="#" role="button">
                     Back home
                 </span>
             </Link>
