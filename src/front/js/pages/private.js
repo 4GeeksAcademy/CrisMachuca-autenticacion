@@ -5,14 +5,14 @@ import { Context } from "../store/appContext";
 
 
 
-export const Private = props => {
+export const Private = () => {
 	const { store, actions } = useContext(Context);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
         const token = localStorage.getItem("token");
         if (token) {
-            actions.verifyToken(); // Verifica si el token es válido y actualiza el estado
+            actions.verifyToken(); 
         }
         setLoading(false);
     }, []);
