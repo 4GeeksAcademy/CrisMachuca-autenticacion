@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../store/appContext";
 import rigoImageUrl from "../../img/rigo-baby.jpg";
 import "../../styles/home.css";
@@ -7,6 +7,10 @@ import { Navigate } from "react-router-dom";
 
 export const Home = () => {
 	const { store, actions } = useContext(Context);
+
+	useEffect(() => {
+        actions.verifyToken();
+    }, []);
 
 	return (
 		<div className="text-center mt-5">

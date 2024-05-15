@@ -80,12 +80,23 @@ const getState = ({ getStore, getActions, setStore }) => {
 					localStorage.setItem("token", data.access_token)
 				})
 			},
+
+			verifyToken: () => {
+                const token = localStorage.getItem("token");
+                if (token) {
+                    setStore({ auth: true });
+                } else {
+                    setStore({ auth: false });
+                }
+            },
 			
 			logout: () => {
 				console.log("log out desde flux")
 				localStorage.removeItem("token");
 				setStore({auth: false})
 			},
+
+			
 
 			getMessage: async () => {
 				try{

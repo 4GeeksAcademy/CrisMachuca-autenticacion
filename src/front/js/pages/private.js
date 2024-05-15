@@ -1,13 +1,29 @@
 import React, { useState, useEffect, useContext } from "react";
 import PropTypes from "prop-types";
-import { Link, useParams } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 import { Context } from "../store/appContext";
 
 
 
 export const Private = props => {
 	const { store, actions } = useContext(Context);
-	const params = useParams();
+	const [loading, setLoading] = useState(true);
+
+	useEffect(() => {
+        const token = localStorage.getItem("token");
+        if (token) {
+            actions.verifyToken(); // Verifica si el token es válido y actualiza el estado
+        }
+        setLoading(false);
+    }, []);
+
+    if (loading) {
+        return <div>Loading...</div>;
+    }
+
+    if (!store.auth) {
+        return <Navigate to="/" />;
+    }
 
 	return (
 		<div className="container d-flex flex-column justify-content-center align-items-center gap-3 p-4">
